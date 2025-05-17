@@ -8,7 +8,7 @@ from typing import List, Dict, Tuple
 
 
 class Visual:
-    """ 
+    """
         Tato třída obsahuje metody pro grafické znázorňování sítě. Uživatel si může vytvořit její instanci,
         v níž specifikuje její parametry, které ovlivňují výsledné grafy.
     """
@@ -22,7 +22,7 @@ class Visual:
         n = range(0, len(loss_per_iteration) * 100, 100)
         fig = plt.figure(figsize=self.figsize)
         axes = fig.add_axes((0.1, 0.1, 0.8, 0.8))
-        axes.plot(n, loss_per_iteration, color=self.line_col)
+        axes.semilogy(n, loss_per_iteration, color=self.line_col)
 
         axes.set_xlabel('Number of iterations')
         axes.set_ylabel('Loss')
@@ -51,5 +51,5 @@ class Visual:
     def plot_output(self, out_tesnor: torch.Tensor) -> None:
         fig = plt.figure(figsize=self.figsize)
         axes = fig.add_axes(self.axes_offset)
-        axes.set_title(f"Output")
+        axes.set_title("Output")
         axes.plot(range(10), out_tesnor.detach().numpy().reshape(10, 1))
