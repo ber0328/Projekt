@@ -96,9 +96,10 @@ class Network:
 
     def test_network(self) -> List:
         """
-            Trénuje síť po dobu specifikovaných epoch. Vrací list, který obsahuje průběh chybové funkce při testování.
+            Testování sítě.
         """
         losses = []
+
         with torch.no_grad():
             for i, data in enumerate(self.testing_loader):
                 inputs, labels = data
@@ -110,18 +111,21 @@ class Network:
 
         return losses
 
-    def train_network(self, epochs=5) -> Dict:
+    def train_network(self, epochs=5, sched_step_size=2) -> Dict:
         """
             Trénuje síť po dobu specifikovaných epoch. Vrací tuple tvaru:
             '{epocha: průběhu chybové funkce během trénování}'
         """
+        scheduler = torch.optim.lr_scheduler.StepLR(self.optimizer, step_size=sched_step_size, gamma=0.1)
         losses_per_epoch = {}
+
         for epoch in range(1, epochs + 1):
             print(f"EPOCH: {epoch}")
             self.model.train(True)
             training_losses = self._train_epoch()
             self.model.eval()
             losses_per_epoch[epoch] = training_losses
+            scheduler.step()
 
         return losses_per_epoch
 
